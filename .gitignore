@@ -8,16 +8,26 @@ pnpm-debug.log*
 lerna-debug.log*
 package-lock.json
 
-# Dependencies
+# Dependencias
 node_modules
 .pnp
 .pnp.js
 
-# Build output
+# Build
 dist
 dist-ssr
 build
 *.local
+
+# Segredos - NUNCA commitar (o .env.example e o modelo publico)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
 
 # Editor
 .vscode/*
@@ -30,7 +40,5 @@ build
 *.sln
 *.sw?
 
-# Environment
-.env
-.env.local
-.env.*.local
+# Plataformas
+.vercel/

@@ -11,10 +11,8 @@ para registrar refeições, gerenciar alimentos e acompanhar metas nutricionais.
 | Serviço | Link |
 | --- | --- |
 | **Frontend (Vercel)** | https://sinutre-fontend-m7kr.vercel.app |
-| **Backend (Railway)** | `https://SEU-SERVICO.up.railway.app` |
-| Health check da API | `https://SEU-SERVICO.up.railway.app/health` |
-
-> Substitua o link do backend pelo domínio real gerado no Railway.
+| **Backend (Railway)** | https://sinutrebackend-production.up.railway.app |
+| Health check da API | https://sinutrebackend-production.up.railway.app/health |
 
 ## Stack
 
@@ -137,7 +135,7 @@ npm run preview  # preview do build
 
    | Nome | Valor | Ambientes |
    | --- | --- | --- |
-   | `VITE_API_URL` | `https://SEU-SERVICO.up.railway.app` | Production, Preview, Development |
+   | `VITE_API_URL` | `https://sinutrebackend-production.up.railway.app` | Production, Preview, Development |
 
    ⚠️ **Variáveis `VITE_*` são embutidas no bundle durante o build.** Depois de
    adicionar ou alterar `VITE_API_URL` é obrigatório fazer um **Redeploy**
