@@ -1,16 +1,30 @@
 // Cliente HTTP mínimo do front para o sinutre-back.
-// Lê a base do servidor de import.meta.env.VITE_API_URL.
+// A base do servidor vem de VITE_API_URL (embutida no bundle durante o build).
 import axios from 'axios';
 
-export const API_URL = import.meta.env.VITE_API_URL;
+// Backend publicado no Railway — usado quando VITE_API_URL não foi definida no
+// ambiente de build (ex.: deploy na Vercel sem a variável configurada).
+const PRODUCTION_API_URL = 'https://sinutrebackend-production.up.railway.app';
+const DEVELOPMENT_API_URL = 'http://localhost:3333';
 
-if (!API_URL) {
-  // Sem isso o app faria requisições para "undefined/..." silenciosamente.
-  console.error(
-    '[SiNutre] VITE_API_URL não está definida. ' +
-      'Configure a variável no ambiente de build (ex.: Vercel) apontando para o backend.',
+function resolveApiUrl(): string {
+  const configured = import.meta.env.VITE_API_URL?.trim();
+
+  if (configured) {
+    // Barra no final geraria "//" nos paths (".../meals").
+    return configured.replace(/\/+$/, '');
+  }
+
+  // Sem fallback o app faria requisições para "undefined/..." silenciosamente.
+  console.warn(
+    '[SiNutre] VITE_API_URL não está definida; usando ' +
+      `${import.meta.env.DEV ? DEVELOPMENT_API_URL : PRODUCTION_API_URL}.`,
   );
+
+  return import.meta.env.DEV ? DEVELOPMENT_API_URL : PRODUCTION_API_URL;
 }
+
+export const API_URL = resolveApiUrl();
 
 export const api = axios.create({
   baseURL: API_URL,

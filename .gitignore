@@ -17,6 +17,7 @@ node_modules
 dist
 dist-ssr
 build
+*.tsbuildinfo
 *.local
 
 # Segredos - NUNCA commitar (o .env.example e o modelo publico)

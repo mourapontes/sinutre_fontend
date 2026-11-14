@@ -116,7 +116,7 @@ O backend precisa estar rodando (`../sinutre-backend-main`) com o
 
 | Variável | Descrição |
 | --- | --- |
-| `VITE_API_URL` | URL base da API (ex.: `http://localhost:3333`) |
+| `VITE_API_URL` | URL base da API (ex.: `http://localhost:3333`). Opcional: se ausente, o app usa `http://localhost:3333` em desenvolvimento e `https://sinutrebackend-production.up.railway.app` no build de produção. |
 
 ## Scripts
 
@@ -141,6 +141,10 @@ npm run preview  # preview do build
    adicionar ou alterar `VITE_API_URL` é obrigatório fazer um **Redeploy**
    (*Deployments → ⋯ → Redeploy*), senão o site continua apontando para
    `undefined/...` e o login falha silenciosamente.
+
+   O deploy não quebra sem essa variável: o `src/lib/api.ts` cai no backend
+   publicado no Railway quando ela não existe. Ainda assim, configurá-la é o
+   caminho recomendado (e obrigatório se o backend mudar de domínio).
 
 4. O `vercel.json` já redireciona todas as rotas para `index.html`
    (necessário para o React Router).

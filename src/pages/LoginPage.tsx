@@ -14,8 +14,9 @@ export function LoginPage() {
 
   function startGithubLogin() {
     if (!API_URL) {
-      // Sem VITE_API_URL a URL viraria relativa ("undefined/auth/github") e o
-      // app voltaria ao login sem nenhuma mensagem. Falha explícita é melhor.
+      // Rede de segurança: API_URL já resolve para o backend publicado (ou
+      // localhost em dev) quando VITE_API_URL não está definida. Se ainda assim
+      // vier vazia, avisamos em vez de navegar para "undefined/auth/github".
       setConfigError(
         'A URL da API não está configurada (VITE_API_URL). ' +
           'Defina a variável na Vercel e faça um novo deploy.',
