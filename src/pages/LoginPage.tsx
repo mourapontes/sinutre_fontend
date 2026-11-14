@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import type { ReactNode } from 'react';
-import { GithubLogo } from '@phosphor-icons/react';
+import { GithubLogo, WarningCircle } from '@phosphor-icons/react';
 import { API_URL } from '@/lib/api';
 
 // Cores extraídas do SVG do protótipo
@@ -8,11 +9,24 @@ const BG = '#F7F7FD';
 const TEXT_DARK = '#1F2937';
 const TEXT_MUTED = '#727272';
 
-function startGithubLogin() {
-  window.location.href = `${API_URL}/auth/github`;
-}
-
 export function LoginPage() {
+  const [configError, setConfigError] = useState<string | null>(null);
+
+  function startGithubLogin() {
+    if (!API_URL) {
+      // Sem VITE_API_URL a URL viraria relativa ("undefined/auth/github") e o
+      // app voltaria ao login sem nenhuma mensagem. Falha explícita é melhor.
+      setConfigError(
+        'A URL da API não está configurada (VITE_API_URL). ' +
+          'Defina a variável na Vercel e faça um novo deploy.',
+      );
+      return;
+    }
+
+    setConfigError(null);
+    window.location.href = `${API_URL}/auth/github`;
+  }
+
   return (
     <>
       {/* ============================= Desktop ============================= */}
@@ -62,7 +76,7 @@ export function LoginPage() {
 
         {/* Conteúdo direito */}
         <div className="absolute inset-y-0 left-[44%] right-0 z-20 flex items-center justify-center px-6">
-          <WelcomeBlock />
+          <WelcomeBlock onLogin={startGithubLogin} error={configError} />
         </div>
       </div>
 
@@ -104,7 +118,7 @@ export function LoginPage() {
             SiNutre
           </h1>
           <div className="flex-1 flex items-center justify-center">
-            <WelcomeBlock />
+            <WelcomeBlock onLogin={startGithubLogin} error={configError} />
           </div>
         </main>
       </div>
@@ -112,7 +126,12 @@ export function LoginPage() {
   );
 }
 
-function WelcomeBlock() {
+interface WelcomeBlockProps {
+  onLogin: () => void;
+  error: string | null;
+}
+
+function WelcomeBlock({ onLogin, error }: WelcomeBlockProps) {
   return (
     <div className="flex flex-col items-center gap-6 text-center max-w-sm w-full">
       <h2
@@ -126,9 +145,20 @@ function WelcomeBlock() {
         <br />
         para começar.
       </p>
+
+      {error && (
+        <div
+          className="alert alert-error text-sm text-left"
+          role="alert"
+        >
+          <WarningCircle size={20} weight="fill" />
+          <span>{error}</span>
+        </div>
+      )}
+
       <button
         type="button"
-        onClick={startGithubLogin}
+        onClick={onLogin}
         className="inline-flex items-center gap-2.5 rounded-xl px-6 py-3 text-white font-medium shadow-md transition-colors cursor-pointer"
         style={{ backgroundColor: TEXT_DARK }}
       >
