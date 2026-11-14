@@ -4,6 +4,14 @@ import axios from 'axios';
 
 export const API_URL = import.meta.env.VITE_API_URL;
 
+if (!API_URL) {
+  // Sem isso o app faria requisições para "undefined/..." silenciosamente.
+  console.error(
+    '[SiNutre] VITE_API_URL não está definida. ' +
+      'Configure a variável no ambiente de build (ex.: Vercel) apontando para o backend.',
+  );
+}
+
 export const api = axios.create({
   baseURL: API_URL,
 });

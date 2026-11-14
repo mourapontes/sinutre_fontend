@@ -10,11 +10,11 @@ para registrar refeições, gerenciar alimentos e acompanhar metas nutricionais.
 
 | Serviço | Link |
 | --- | --- |
-| **Frontend (Vercel)** | `https://SEU-PROJETO.vercel.app` |
-| **Backend (Railway)** | `https://SEU-PROJETO.up.railway.app` |
-| Health check da API | `https://SEU-PROJETO.up.railway.app/health` |
+| **Frontend (Vercel)** | https://sinutre-fontend-m7kr.vercel.app |
+| **Backend (Railway)** | `https://SEU-SERVICO.up.railway.app` |
+| Health check da API | `https://SEU-SERVICO.up.railway.app/health` |
 
-> Substitua os links acima pelos endereços reais após o deploy.
+> Substitua o link do backend pelo domínio real gerado no Railway.
 
 ## Stack
 
@@ -133,9 +133,21 @@ npm run preview  # preview do build
 
 1. Importe o repositório na Vercel.
 2. Framework preset: **Vite** (build `npm run build`, output `dist`).
-3. Defina `VITE_API_URL` com a URL pública do backend no Railway.
+3. Em **Settings → Environment Variables**, adicione:
+
+   | Nome | Valor | Ambientes |
+   | --- | --- | --- |
+   | `VITE_API_URL` | `https://SEU-SERVICO.up.railway.app` | Production, Preview, Development |
+
+   ⚠️ **Variáveis `VITE_*` são embutidas no bundle durante o build.** Depois de
+   adicionar ou alterar `VITE_API_URL` é obrigatório fazer um **Redeploy**
+   (*Deployments → ⋯ → Redeploy*), senão o site continua apontando para
+   `undefined/...` e o login falha silenciosamente.
+
 4. O `vercel.json` já redireciona todas as rotas para `index.html`
    (necessário para o React Router).
+5. Confira se o domínio da Vercel está em `FRONTEND_URL` no backend, senão o
+   navegador bloqueia as chamadas por CORS.
 
 ## Tema
 
