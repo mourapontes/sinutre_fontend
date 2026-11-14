@@ -10,7 +10,21 @@ const TEXT_DARK = '#1F2937';
 const TEXT_MUTED = '#727272';
 
 export function LoginPage() {
-  const [configError, setConfigError] = useState<string | null>(null);
+  // O backend volta para cá com ?error=<mensagem> quando o login falha
+  // (secret errado, autorização cancelada etc.).
+  const [configError, setConfigError] = useState<string | null>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get('error');
+
+    if (!error) {
+      return null;
+    }
+
+    // Limpa a URL para a mensagem não reaparecer ao recarregar.
+    window.history.replaceState({}, '', window.location.pathname);
+
+    return error;
+  });
 
   function startGithubLogin() {
     if (!API_URL) {
